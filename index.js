@@ -6,6 +6,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
+
 require("dotenv").config({
   path: "./.env",
 });
@@ -56,10 +57,11 @@ io.on("connection", (socket) => {
   const messages = {}; // Object to track messages sent to each user
 
   socket.on("sendMessage", ({ senderId, receiverId, text, images }) => {
-    const message = createMessage({ senderId, receiverId, text, images });
 
+    const message = createMessage({ senderId, receiverId, text, images});
+    console.log(message);
     const user = getUser(receiverId);
-
+    
     // Store the messages in the `messages` object
     if (!messages[receiverId]) {
       messages[receiverId] = [message];
@@ -95,9 +97,10 @@ io.on("connection", (socket) => {
 
   // update and get last message
   socket.on("updateLastMessage", ({ lastMessage, lastMessagesId }) => {
+    console.log("pesan terakhir", lastMessage)
     io.emit("getLastMessage", {
-      lastMessage,
-      lastMessagesId,
+      lastMessage ,
+      lastMessagesId ,
     });
   });
 
